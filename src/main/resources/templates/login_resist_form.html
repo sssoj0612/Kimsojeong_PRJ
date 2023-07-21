@@ -4,6 +4,12 @@
         <meta charset="utf-8">
         <title>로그인 / 회원가입 폼 템플릿</title>
         <style>
+            body {
+                background-image: url("../static/img/background.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
             * {
                 margin: 0;
                 padding: 0;
@@ -12,7 +18,6 @@
             .wrap {
                 height: 100%;
                 width: 100%;
-                background-image: url("/static/img/background.jpg");
                 background-position: center;
                 background-size: cover;
                 position: absolute;
@@ -85,9 +90,7 @@
                 outline: none;
                 border-radius: 30px;
             }
-            .checkbox {
-                margin: 30px 10px 30px 0;
-            }
+
             span {
                 color: #777;
                 font-size: 12px;
@@ -101,42 +104,52 @@
                 left: 450px;
             }
         </style>
+
     </head>
     <body>
-        <div class="wrap">
-            <div class="form-wrap">
-                <div class="button-wrap">
-                    <div id="btn"></div>
-                    <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
-                    <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
-                </div>
-                <div class="social-icons">
-
-                    <img src="/static/img/fb.png" alt="facebook">
-                    <img src="/static/img/tw.png" alt="twitter">
-                    <img src="/static/img/gl.png" alt="google">
-                </div>
-                <form id="login" action="" class="input-group">
-                    <input type="text" class="input-field" placeholder="User name or Email" required>
-                    <input type="password" class="input-field" placeholder="Enter Password" required>
-                    <input type="checkbox" class="checkbox"><span>Remember Password</span>
-                    <button class="submit">Login</button>
-                </form>
-                <form id="register" action="" class="input-group">
-                    <input type="text" class="input-field" placeholder="User name or Email" required>
-                    <input type="email" class="input-field" placeholder="Your Email" required>
-                    <input type="password" class="input-field" placeholder="Enter Password" required>
-                    <input type="checkbox" class="checkbox"><span>Terms and conditions</span>
-                    <button class="submit">REGISTER</button>
-                </form>
+    <div class="wrap">
+        <div class="form-wrap">
+            <div class="button-wrap">
+                <div id="btn"></div>
+                <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
+                <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
             </div>
+            <div class="social-icons">
+                <!-- 소셜 아이콘 이미지 -->
+            </div>
+
+            <form action="/user/loginProc" method="post" onsubmit="return checkLoginData()" id="login" class="input-group">
+                <input type="text" name="user_id" id="login_user_id" class="input-field" placeholder="User ID" required>
+                <input type="password" name="password" id="login_password" class="input-field" placeholder="Enter Password" required>
+                <br><br>
+                <input type="submit" id="btnLogin" value="Login" class="submit">
+            </form>
+
+            <form name="join" method="post" action="/user/insertUserInfo" onsubmit="return doSubmit(this)" id="register" class="input-group">
+                <input type="text" name="user_id" id="register_user_id" class="input-field" placeholder="User ID" required>
+                <input type="button" id="btnUserId" value="중복확인" onclick="checkUserIdExists()">
+                <input type="email" name="email" id="register_email" class="input-field" placeholder="Your Email" required>
+                <button type="button" id="btnEmail" onclick="checkEmailExists()">중복확인</button>
+                <input type="text" size="18" name="authNumber" id="authNumber" placeholder="메일로 발송된 인증번호">
+                <input type="password" name="password" id="register_password" class="input-field" placeholder="Enter Password" required>
+                <br><br>
+                <input type="submit" id="btnSend" value="Sign Up" class="submit">
+            </form>
         </div>
-        <script>
+    </div>
+
+
+
+        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        <script type="text/javascript" src="../static/src/js/jquery-3.6.0.min.js"></script>
+
+        <script type="text/javascript">
+
             let x = document.getElementById("login");
             let y = document.getElementById("register");
             let z = document.getElementById("btn");
-            
-            
+
+
             function login(){
                 x.style.left = "50px";
                 y.style.left = "450px";
@@ -148,6 +161,170 @@
                 y.style.left = "50px";
                 z.style.left = "110px";
             }
+
+
+            // 아이디 중복체크여부 (중복 Y / 중복아님 : N)
+            let userIdCheck = "Y";
+
+            // 이메일 중복체크 인증번호 발송 값
+            let emailAuthNumber = "";
+
+            // HTML로딩이 완료되고, 실행됨
+            $(document).ready(function () {
+
+
+
+                function checkInputData() {
+                    let login = document.getElementById("login"); // form 태그
+
+                    if (login.user_id.value === "") {
+                        alert("아이디를 입력하세요.");
+                        login.user_id.focus();
+                        return false;
+                    }
+
+                    if (login.password.value === "") {
+                        alert("비밀번호를 입력하세요.");
+                        login.password.focus();
+                        return false;
+                    }
+
+                }
+
+
+
+                let register = document.getElementById("register"); // form 태그
+
+                // 아이디 중복체크
+                $("#btnUserId").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                    userIdExists(register)
+
+                })
+
+                // 이메일 중복체크
+                $("#btnEmail").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                    emailExists(register)
+
+                })
+
+
+                // 회원가입
+                $("#btnSend").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                    doSubmit(register);
+                })
+
+
+
+            })
+
+            // 회원아이디 중복 체크
+            function userIdExists(register) {
+
+                if (register.user_id.value === "") {
+                    alert("아이디를 입력하세요.");
+                    register.user_id.focus();
+                    return;
+                }
+
+                // Ajax 호출해서 회원가입하기
+                $.ajax({
+                        url: "/user/getUserIdExists",
+                        type: "post", // 전송방식은 Post
+                        dataType: "JSON", // 전송 결과는 JSON으로 받기
+                        data: $("#register").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                        success: function (json) { // 호출이 성공했다면..
+
+                            if (json.exists_yn === "Y") {
+                                alert("이미 가입된 아이디가 존재합니다.");
+                                register.user_id.focus();
+
+                            } else {
+                                alert("가입 가능한 아이디입니다.");
+                                userIdCheck = "N";
+                            }
+
+                        }
+                    }
+                )
+            }
+
+            // 이메일 중복 체크
+            function emailExists(register) {
+                if (register.email.value === "") {
+                    alert("이메일을 입력하세요.");
+                    register.email.focus();
+                    return;
+                }
+
+                $.ajax({
+                        url: "/user/getEmailExists",
+                        type: "post", // 전송방식은 Post
+                        dataType: "JSON", // 전송 결과는 JSON으로 받기
+                        data: $("#register").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                        success: function (json) { // 호출이 성공했다면..
+
+                            if (json.exists_yn === "Y") {
+                                alert("이미 가입된 이메일 주소가 존재합니다.");
+                                register.email.focus();
+
+                            } else {
+                                alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하기 바랍니다.");
+                                emailAuthNumber = json.authNumber;
+
+                            }
+
+                        }
+                    }
+                )
+            }
+
+
+            //회원가입 정보의 유효성 체크하기
+            function doSubmit(register) {
+
+                if (register.user_id.value === "") {
+                    alert("아이디를 입력하세요.");
+                    register.user_id.focus();
+                    return;
+                }
+
+                if (userIdCheck !== "N") {
+                    alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입 바랍니다.");
+                    register.user_id.focus();
+                    return;
+                }
+
+
+                if (register.password.value === "") {
+                    alert("비밀번호를 입력하세요.");
+                    register.password.focus();
+                    return;
+                }
+
+
+                if (register.email.value === "") {
+                    alert("이메일을 입력하세요.");
+                    register.email.focus();
+                    return;
+                }
+
+                if (register.authNumber.value === "") {
+                    alert("이메일 인증번호를 입력하세요.");
+                    register.authNumber.focus();
+                    return;
+                }
+
+                if (register.authNumber.value != emailAuthNumber) {
+                    alert("이메일 인증번호가 일치하지 않습니다.");
+                    register.authNumber.focus();
+                    return;
+                }
+            }
+
         </script>
+
+
+
+
     </body>
 </html>
