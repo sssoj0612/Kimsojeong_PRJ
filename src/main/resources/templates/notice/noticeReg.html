@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>게시판 글쓰기</title>
+	<link rel="stylesheet" href="/css/table.css"/>
+	<script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+	<script th:inline="javascript">
+
+		$(document).ready(function () {
+			// 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+			$("#btnList").on("click", function () {
+				location.href = "/notice/noticeList"; // 공지사항 리스트 이동
+			})
+		})
+
+		//글자 길이 바이트 단위로 체크하기(바이트값 전달)
+		function calBytes(str) {
+			let tcount = 0;
+			let tmpStr = String(str);
+			let strCnt = tmpStr.length;
+			let onechar;
+			for (let i = 0; i < strCnt; i++) {
+				onechar = tmpStr.charAt(i);
+				if (escape(onechar).length > 4) {
+					tcount += 2;
+				} else {
+					tcount += 1;
+				}
+			}
+			return tcount;
+		}
+
+		// 공지사항 저장하기
+		function doSubmit() {
+
+			let f = document.getElementById("f"); // form 태그
+
+			if (f.title.value === "") {
+				alert("제목을 입력하시기 바랍니다.");
+				f.title.focus();
+				return;
+			}
+			if (calBytes(f.title.value) > 200) {
+				alert("최대 200Bytes까지 입력 가능합니다.");
+				f.title.focus();
+				return;
+			}
+
+			for (let i = 0; i < f.notice_yn.length; i++) {
+				if (f.notice_yn[i].checked) {
+					noticeCheck = true;
+					break;
+				}
+			}
+
+			if (f.contents.value === "") {
+				alert("내용을 입력하시기 바랍니다.");
+				f.contents.focus();
+				return;
+			}
+			if (calBytes(f.contents.value) > 4000) {
+				alert("최대 4000Bytes까지 입력 가능합니다.");
+				f.contents.focus();
+				return;
+			}
+
+		}
+	</script>
+</head>
+<body>
+<h2>공지사항 등록하기</h2>
+<hr/>
+<br/>
+<form action="/notice/noticeInsert" method="post" onsubmit="doSubmit()" name="f" id="f">
+	<div class="divTable minimalistBlack" style="text-align: center">
+		<div class="divTableBody">
+			<div class="divTableRow">
+				<div class="divTableCell" style="width: 15%">제목
+				</div>
+				<div class="divTableCell">
+					<input type="text" name="title" maxlength="100" style="width: 98%"/>
+				</div>
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell">공지글 여부
+				</div>
+				<div class="divTableCell" style="text-align: left">
+					공지<input type="checkbox" name="notice_yn" value="Y"/>
+
+				</div>
+			</div>
+			<div class="divTableRow">
+				<div class="divTableCell" style="vertical-align: middle;">내용
+				</div>
+				<div class="divTableCell">
+					<textarea name="contents" style="width: 98%; height: 400px"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div>
+
+		<br>
+		<button id="btnSend" type="submit">등록</button>
+		<button type="reset">다시 작성</button>
+		<button id="btnList" type="button">목록</button>
+	</div>
+</form>
+</body>
+</html>
