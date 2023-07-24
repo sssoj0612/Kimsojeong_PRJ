@@ -1,330 +1,340 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>로그인 / 회원가입 폼 템플릿</title>
-        <style>
-            body {
-                background-image: url("../static/img/background.jpg");
-                background-repeat: no-repeat;
-                background-size: cover;
-            }
+<head>
+    <meta charset="utf-8">
+    <title>로그인 / 회원가입 폼 템플릿</title>
+    <style>
+        body {
+            background-image: url("../static/img/background.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
 
-            * {
-                margin: 0;
-                padding: 0;
-                font-family: sans-serif;
-            }
-            .wrap {
-                height: 100%;
-                width: 100%;
-                background-position: center;
-                background-size: cover;
-                position: absolute;
-            }
-            .form-wrap {
-                width: 380px;
-                height: 480px;
-                position: relative;
-                margin: 6% auto;
-                background: #fff;
-                padding: 5px;
-                overflow: hidden;
-            }
-            .button-wrap {
-                width: 230px;
-                margin: 35px auto;
-                position: relative;
-                box-shadow: 0 0 600px 9px #fcae8f;
-                border-radius: 30px;
-            }
-            .togglebtn {
-                padding: 10px 30px;
-                cursor: pointer;
-                background: transparent;
-                border: 0;
-                outline: none;
-                position: relative;
-            }
-            #btn {
-                top: 0;
-                left: 0;
-                position: absolute;
-                width: 110px;
-                height: 100%;
-                background: linear-gradient(to right, #ff105f, #ffad06);
-                border-radius: 30px;
-                transition: .5s;
-            }
-            .social-icons {
-                margin: 30px auto;
-                text-align: center;
-            }
-            .social-icons img {
-                width: 30px ;
-                cursor: pointer;
-            }
-            .input-group {
-                top: 180px;
-                position: absolute;
-                width: 280px;
-                transition: .5s;
-            }
-            .input-field {
-                width: 100%;
-                padding: 10px 0;
-                margin: 5px 0;
-                border: none;
-                border-bottom: 1px solid #999;
-                outline: none;
-                background: transparent;
-            }
-            .submit {
-                width: 85%;
-                padding: 10px 30px;
-                cursor: pointer;
-                display: block;
-                margin: auto;
-                background: linear-gradient(to right, #ff105f, #ffad06);
-                border: 0;
-                outline: none;
-                border-radius: 30px;
-            }
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
 
-            span {
-                color: #777;
-                font-size: 12px;
-                bottom: 68px;
-                position: absolute;
-            }
-            #login {
-                left: 50px;
-            }
-            #register {
-                left: 450px;
-            }
-        </style>
+        .wrap {
+            height: 100%;
+            width: 100%;
+            background-position: center;
+            background-size: cover;
+            position: absolute;
+        }
 
-    </head>
-    <body>
-    <div class="wrap">
-        <div class="form-wrap">
-            <div class="button-wrap">
-                <div id="btn"></div>
-                <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
-                <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
-            </div>
-            <div class="social-icons">
-                <!-- 소셜 아이콘 이미지 -->
-            </div>
+        .form-wrap {
+            width: 380px;
+            height: 480px;
+            position: relative;
+            margin: 6% auto;
+            background: #fff;
+            padding: 5px;
+            overflow: hidden;
+        }
 
-            <form action="/user/loginProc" method="post" onsubmit="return checkLoginData()" id="login" class="input-group">
-                <input type="text" name="user_id" id="login_user_id" class="input-field" placeholder="User ID" required>
-                <input type="password" name="password" id="login_password" class="input-field" placeholder="Enter Password" required>
-                <br><br>
-                <input type="submit" id="btnLogin" value="Login" class="submit">
-            </form>
+        .button-wrap {
+            width: 230px;
+            margin: 35px auto;
+            position: relative;
+            box-shadow: 0 0 600px 9px #fcae8f;
+            border-radius: 30px;
+        }
 
-            <form name="join" method="post" action="/user/insertUserInfo" onsubmit="return doSubmit(this)" id="register" class="input-group">
-                <input type="text" name="user_id" id="register_user_id" class="input-field" placeholder="User ID" required>
-                <input type="button" id="btnUserId" value="중복확인" onclick="checkUserIdExists()">
-                <input type="email" name="email" id="register_email" class="input-field" placeholder="Your Email" required>
-                <button type="button" id="btnEmail" onclick="checkEmailExists()">중복확인</button>
-                <input type="text" size="18" name="authNumber" id="authNumber" placeholder="메일로 발송된 인증번호">
-                <input type="password" name="password" id="register_password" class="input-field" placeholder="Enter Password" required>
-                <br><br>
-                <input type="submit" id="btnSend" value="Sign Up" class="submit">
-            </form>
-        </div>
-    </div>
+        .togglebtn {
+            padding: 10px 30px;
+            cursor: pointer;
+            background: transparent;
+            border: 0;
+            outline: none;
+            position: relative;
+        }
+
+        #btn {
+            top: 0;
+            left: 0;
+            position: absolute;
+            width: 110px;
+            height: 100%;
+            background: linear-gradient(to right, #ff105f, #ffad06);
+            border-radius: 30px;
+            transition: .5s;
+        }
+
+        .social-icons {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .social-icons img {
+            width: 30px;
+            cursor: pointer;
+        }
+
+        .input-group {
+            top: 180px;
+            position: absolute;
+            width: 280px;
+            transition: .5s;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 0;
+            margin: 5px 0;
+            border: none;
+            border-bottom: 1px solid #999;
+            outline: none;
+            background: transparent;
+        }
+
+        .submit {
+            width: 85%;
+            padding: 10px 30px;
+            cursor: pointer;
+            display: block;
+            margin: auto;
+            background: linear-gradient(to right, #ff105f, #ffad06);
+            border: 0;
+            outline: none;
+            border-radius: 30px;
+        }
+
+        span {
+            color: #777;
+            font-size: 12px;
+            bottom: 68px;
+            position: absolute;
+        }
+
+        #login {
+            left: 50px;
+        }
+
+        #register {
+            left: 450px;
+        }
+    </style>
 
 
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
 
-        <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-        <script type="text/javascript" src="../static/src/js/jquery-3.6.0.min.js"></script>
+        // 아이디 중복체크여부 (중복 Y / 중복아님 : N)
+        let userIdCheck = "Y";
 
-        <script type="text/javascript">
+        // 이메일 중복체크 인증번호 발송 값
+        let emailAuthNumber = "";
 
-            let x = document.getElementById("login");
-            let y = document.getElementById("register");
-            let z = document.getElementById("btn");
+        // HTML로딩이 완료되고, 실행됨
+        $(document).ready(function () {
 
+            let register = document.getElementById("register"); // form 태그
 
-            function login(){
-                x.style.left = "50px";
-                y.style.left = "450px";
-                z.style.left = "0";
-            }
-
-            function register(){
-                x.style.left = "-400px";
-                y.style.left = "50px";
-                z.style.left = "110px";
-            }
-
-
-            // 아이디 중복체크여부 (중복 Y / 중복아님 : N)
-            let userIdCheck = "Y";
-
-            // 이메일 중복체크 인증번호 발송 값
-            let emailAuthNumber = "";
-
-            // HTML로딩이 완료되고, 실행됨
-            $(document).ready(function () {
-
-
-
-                function checkInputData() {
-                    let login = document.getElementById("login"); // form 태그
-
-                    if (login.user_id.value === "") {
-                        alert("아이디를 입력하세요.");
-                        login.user_id.focus();
-                        return false;
-                    }
-
-                    if (login.password.value === "") {
-                        alert("비밀번호를 입력하세요.");
-                        login.password.focus();
-                        return false;
-                    }
-
-                }
-
-
-
-                let register = document.getElementById("register"); // form 태그
-
-                // 아이디 중복체크
-                $("#btnUserId").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-                    userIdExists(register)
-
-                })
-
-                // 이메일 중복체크
-                $("#btnEmail").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-                    emailExists(register)
-
-                })
-
-
-                // 회원가입
-                $("#btnSend").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
-                    doSubmit(register);
-                })
-
-
+            // 아이디 중복체크
+            $("#btnUserId").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                userIdExists(register)
 
             })
 
-            // 회원아이디 중복 체크
-            function userIdExists(register) {
+            // 이메일 중복체크
+            $("#btnEmail").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                emailExists(register)
 
-                if (register.user_id.value === "") {
-                    alert("아이디를 입력하세요.");
-                    register.user_id.focus();
-                    return;
+            })
+
+
+            // 회원가입
+            $("#btnSend").on("click", function () { // 버튼 클릭했을때, 발생되는 이벤트 생성함(onclick 이벤트와 동일함)
+                doSubmit(register);
+            })
+        })
+
+
+        function checkInputData() {
+            let login = document.getElementById("login"); // form 태그
+
+            if (login.user_id.value === "") {
+                alert("아이디를 입력하세요.");
+                login.user_id.focus();
+                return false;
+            }
+
+            if (login.password.value === "") {
+                alert("비밀번호를 입력하세요.");
+                login.password.focus();
+                return false;
+            }
+
+        }
+
+
+        // 회원아이디 중복 체크
+        function userIdExists(register) {
+
+            if (register.user_id.value === "") {
+                alert("아이디를 입력하세요.");
+                register.user_id.focus();
+                return;
+            }
+
+            // Ajax 호출해서 회원가입하기
+            $.ajax({
+                    url: "/user/getUserIdExists",
+                    type: "post", // 전송방식은 Post
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    data: $("#register").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                    success: function (json) { // 호출이 성공했다면..
+
+                        if (json.exists_yn === "Y") {
+                            alert("이미 가입된 아이디가 존재합니다.");
+                            register.user_id.focus();
+
+                        } else {
+                            alert("가입 가능한 아이디입니다.");
+                            userIdCheck = "N";
+                        }
+
+                    }
                 }
+            )
+        }
 
-                // Ajax 호출해서 회원가입하기
-                $.ajax({
-                        url: "/user/getUserIdExists",
-                        type: "post", // 전송방식은 Post
-                        dataType: "JSON", // 전송 결과는 JSON으로 받기
-                        data: $("#register").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
-                        success: function (json) { // 호출이 성공했다면..
+        // 이메일 중복 체크
+        function emailExists(register) {
+            if (register.email.value === "") {
+                alert("이메일을 입력하세요.");
+                register.email.focus();
+                return;
+            }
 
-                            if (json.exists_yn === "Y") {
-                                alert("이미 가입된 아이디가 존재합니다.");
-                                register.user_id.focus();
+            $.ajax({
+                    url: "/user/getEmailExists",
+                    type: "post", // 전송방식은 Post
+                    dataType: "JSON", // 전송 결과는 JSON으로 받기
+                    data: $("#register").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
+                    success: function (json) { // 호출이 성공했다면..
 
-                            } else {
-                                alert("가입 가능한 아이디입니다.");
-                                userIdCheck = "N";
-                            }
+                        if (json.exists_yn === "Y") {
+                            alert("이미 가입된 이메일 주소가 존재합니다.");
+                            register.email.focus();
+
+                        } else {
+                            alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하기 바랍니다.");
+                            emailAuthNumber = json.authNumber;
 
                         }
+
                     }
-                )
+                }
+            )
+        }
+
+
+        //회원가입 정보의 유효성 체크하기
+        function doSubmit(register) {
+
+            if (register.user_id.value === "") {
+                alert("아이디를 입력하세요.");
+                register.user_id.focus();
+                return;
             }
 
-            // 이메일 중복 체크
-            function emailExists(register) {
-                if (register.email.value === "") {
-                    alert("이메일을 입력하세요.");
-                    register.email.focus();
-                    return;
-                }
-
-                $.ajax({
-                        url: "/user/getEmailExists",
-                        type: "post", // 전송방식은 Post
-                        dataType: "JSON", // 전송 결과는 JSON으로 받기
-                        data: $("#register").serialize(), // form 태그 내 input 등 객체를 자동으로 전송할 형태로 변경하기
-                        success: function (json) { // 호출이 성공했다면..
-
-                            if (json.exists_yn === "Y") {
-                                alert("이미 가입된 이메일 주소가 존재합니다.");
-                                register.email.focus();
-
-                            } else {
-                                alert("이메일로 인증번호가 발송되었습니다. \n받은 메일의 인증번호를 입력하기 바랍니다.");
-                                emailAuthNumber = json.authNumber;
-
-                            }
-
-                        }
-                    }
-                )
+            if (userIdCheck !== "N") {
+                alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입 바랍니다.");
+                register.user_id.focus();
+                return;
             }
 
 
-            //회원가입 정보의 유효성 체크하기
-            function doSubmit(register) {
-
-                if (register.user_id.value === "") {
-                    alert("아이디를 입력하세요.");
-                    register.user_id.focus();
-                    return;
-                }
-
-                if (userIdCheck !== "N") {
-                    alert("아이디 중복 체크 및 중복되지 않은 아이디로 가입 바랍니다.");
-                    register.user_id.focus();
-                    return;
-                }
-
-
-                if (register.password.value === "") {
-                    alert("비밀번호를 입력하세요.");
-                    register.password.focus();
-                    return;
-                }
-
-
-                if (register.email.value === "") {
-                    alert("이메일을 입력하세요.");
-                    register.email.focus();
-                    return;
-                }
-
-                if (register.authNumber.value === "") {
-                    alert("이메일 인증번호를 입력하세요.");
-                    register.authNumber.focus();
-                    return;
-                }
-
-                if (register.authNumber.value != emailAuthNumber) {
-                    alert("이메일 인증번호가 일치하지 않습니다.");
-                    register.authNumber.focus();
-                    return;
-                }
+            if (register.password.value === "") {
+                alert("비밀번호를 입력하세요.");
+                register.password.focus();
+                return;
             }
 
-        </script>
+
+            if (register.email.value === "") {
+                alert("이메일을 입력하세요.");
+                register.email.focus();
+                return;
+            }
+
+            if (register.authNumber.value === "") {
+                alert("이메일 인증번호를 입력하세요.");
+                register.authNumber.focus();
+                return;
+            }
+
+            if (register.authNumber.value != emailAuthNumber) {
+                alert("이메일 인증번호가 일치하지 않습니다.");
+                register.authNumber.focus();
+                return;
+            }
+        }
+    </script>
 
 
+</head>
+<body>
+<div class="wrap">
+    <div class="form-wrap">
+        <div class="button-wrap">
+            <div id="btn"></div>
+            <button type="button" class="togglebtn" onclick="login()">LOG IN</button>
+            <button type="button" class="togglebtn" onclick="register()">REGISTER</button>
+        </div>
+        <div class="social-icons">
+            <!-- 소셜 아이콘 이미지 -->
+        </div>
+
+        <form action="/user/loginProc" method="post" onsubmit="checkInputData()" id="login" class="input-group">
+            <input type="text" name="user_id" id="login_user_id" class="input-field" placeholder="User ID" required>
+            <input type="password" name="password" id="login_password" class="input-field" placeholder="Enter Password"
+                   required>
+            <br><br>
+            <input type="submit" id="btnLogin" value="Login" class="submit">
+        </form>
+
+        <form name="join" method="post" action="/user/insertUserInfo" onsubmit="return doSubmit(this)" id="register"
+              class="input-group">
+            <input type="text" name="user_id" id="register_user_id" class="input-field" placeholder="User ID" required>
+            <input type="button" id="btnUserId" value="중복확인">
+            <input type="email" name="email" id="register_email" class="input-field" placeholder="Your Email" required>
+            <button type="button" id="btnEmail">중복확인</button>
+            <input type="text" size="20" name="authNumber" id="authNumber" placeholder="메일로 발송된 인증번호">
+            <input type="password" name="password" id="register_password" class="input-field"
+                   placeholder="Enter Password" required>
+            <br><br>
+            <input type="submit" id="btnSend" value="Sign Up" class="submit">
+        </form>
+    </div>
+</div>
 
 
-    </body>
+<script type="text/javascript">
+
+    let x = document.getElementById("login");
+    let y = document.getElementById("register");
+    let z = document.getElementById("btn");
+
+
+    function login() {
+        x.style.left = "50px";
+        y.style.left = "450px";
+        z.style.left = "0";
+    }
+
+    function register() {
+        x.style.left = "-400px";
+        y.style.left = "50px";
+        z.style.left = "110px";
+    }
+
+</script>
+
+
+</body>
 </html>

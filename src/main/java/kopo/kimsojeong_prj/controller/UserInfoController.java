@@ -154,7 +154,7 @@ public class UserInfoController {
 
             } else { // 로그인 실패시
                 msg = "로그인이 실패했습니다. \n";
-                url = "/login";
+                url = "/login_resist_form";
             }
         } catch (Exception e) { // 저장이 실패되면 사용자에게 보여줄 메시지
             msg = "시스템 문제로 로그인이 실패했습니다.";
@@ -217,4 +217,12 @@ public class UserInfoController {
 
         return rDTO;
     }
+
+
+
+
+
+
+
+
 }
